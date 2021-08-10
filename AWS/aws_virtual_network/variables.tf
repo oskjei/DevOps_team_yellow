@@ -4,7 +4,6 @@ variable "instance_type" {
 variable "region" {
     type = string
 }
-
 variable "ami" {
     type = string
 }

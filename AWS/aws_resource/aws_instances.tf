@@ -11,6 +11,7 @@ terraform {
 # Defining provider and region.
 provider "aws" {
   region = var.region
+  shared_credentials_file = var.creds
 }
 
 # Defining resource group 1. AMI is found on AWS dashboard
