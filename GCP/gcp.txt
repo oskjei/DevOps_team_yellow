@@ -1,0 +1,70 @@
+Google Cloud VPC Network Peering allows internal IP address connectivity across two 
+Virtual Private Cloud (VPC) networks regardless of wheter they belong to the same organization.
+
+VPC Network Peering enables you to connect VPC netorks so that workloads in different VPC
+networks can communicate internally. 
+Traffic stays within Google's network and does not traverse the public internet. 
+
+VPC Network Peering is useful in these environments:
+* SaaS ecosystems in Google Cloud. 
+- You can make services available privatly across different VPC networks within and across organizations.
+* Organizations that have several network administrative domains that need to communicate using internal IP addresses.
+
+If you have multiple network administrative domains within your organization, 
+VPC Network Peering allows you to make services available across VPC networks by using internal IP addresses.
+If you offer services to other organizations, 
+VPC Network Peering allows you to make those services available by using internal IP addresses to those organizations.
+The ability to offer services across organizations is useful if you want to offers services to other enterprises, 
+and it is also useful if you own or control more than one organization.
+
+VPC Network Peering gives you several advantages over using external IP addresses or VPNs to connect networks, including:
+* Network Latency: Connectivity that uses only internal addresses provides lower latency than connectivity that uses external addresses.
+* Network Security: Service owners do not need to have their services exposed to the public Internet and deal with its associated risks.
+* Network Cost: Google Cloud charges egress bandwidth pricing for networks using external IPs to communicate even if the traffic is within the same zone.
+- If however, the networks are peered they can use internal IPs to communicate and save on those egress costs.
+- Regular network pricing still applies to all traffic. 
+
+## Key properties
+
+Peered VPC networks exhibit the following key properties:
+* VPC Network Peering works with Compute Engine,GKE, and App Engine flexible environment.
+* Peered VPC networks remian administrativly separate.
+- Routes, firewalls, VPNs, and other traffic management tools are administrated and applied separatly in each of the VPC networks.
+* Each side of a peering association is set up independently. Peering will be active when the configuration from both sides matches. 
+- Either side can choose to delette the peering association at any time. 
+* Peering and the option to import and export custom routes can be configured for one VPC network even before the other VPC network is created.
+- Although route exchange only occurs after both sides have been configured. 
+* VPC peers always exchange subnet routes that do not use privatly used public IP addresses. 
+- Networks must explicitly export privatly used public IP subnet routes for other networks to use them and explicitly import privatly used public IP subnet routes to receive them from other networks.
+* You can exchange custom routes (static and dynamic routes), depending on wheter the peering configurations have been configured to import or export them.
+* Subnet and static routes are global. Dynamic routes can be regional or global, depending on the VPC network's dynamic routing mode. 
+* A given VPC network can peer with multiple VPC networks, but there is a limit. 
+* IAM permissions for creating and deleting VPC Network Peering are included as part of the Compute Network Admin role.
+* Peering traffic (traffic flowing between peered networks) has the same latency, troughput, and availability as private traffic in the same network.
+* Billing policy for private traffic in same network. 
+* Billing policy for peering traffic is the same as the billing policy for the private traffic in same network.
+* If you are an organization policy administrator, you can use an organization policy to constrain which VPC networks can peer with VPC networks in you organization. 
+
+## Restrictions
+When peering with VPC networks, consider the following restrictions:
+* A subnet CIDR range in one peered VPC network cannot overlap with a static route in another peered network.
+- This rule covers both subnet routes and static routes.
+- Google Cloud checks for overlap in the following circumstances and generates an error when the overlap occurs. 
+    * When you peer VPC networks for the first time
+    * When you create a static route in a peered VPC network
+    * When you create a new subnet in a peered VPC network
+* A dynamic route can overlap with a subnet route in a peer network. 
+- For dynamic routes, the destination ranges that overlap with a subnet route from the peer network are silently dropped. 
+- Google Cloud uses the subnet route.
+* Only VPC networks are supported for VPC Network Peering. Peering is NOT supported for elgacy networks. 
+* You cannot disale the subnet route exchange or select which subnet routes are exchanged, 
+- After peering is established, all resources within subnet IP addresses are accessible across directly peered networks. 
+- VPC Network Peering does not provide granular route controls to filter out which subnet CIDR ranges are reachable across peered networks. 
+- You must use firewall rules to filter traffic if that is required. 
+* The following types of endpoints and resources are reachable across any directly peered networks:
+    * Virtual machine (VM) internal IPs in all subnets
+    * Internal load balanced IPs in all subnets. 
+* Only directly peered networks can communicate. Transitive peering is not supported.
+- If VPC network N1 is peered with N2 and N3, but N2 and N3 are not directly connected, VPC network N" cannot communicate with VPC network N3 over Network Peering.
+* You cannot use a tag service account from one peered network in the other peered network.
+* Compute Engine internal DNS names created in a network are not accessable to peered networks. Use the IP address to reach the VM instances in peered network.
