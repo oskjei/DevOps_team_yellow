@@ -1,0 +1,1 @@
+resourcegpN = "Team_Yellow_First"
