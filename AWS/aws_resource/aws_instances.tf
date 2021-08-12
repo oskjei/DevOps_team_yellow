@@ -19,7 +19,7 @@ resource "aws_instance" "resource_group_1" {
   instance_type = var.instance_type
   
   tags = {
-    name = "first_image"
+    Name = "first_instance"
   }
 }
 
@@ -29,6 +29,6 @@ resource "aws_instance" "resource_group_2" {
   instance_type = var.instance_type
   
   tags = {
-    name = "second_image"
+    Name = "second_instance"
   }
 }

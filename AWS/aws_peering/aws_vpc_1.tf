@@ -11,27 +11,30 @@ terraform {
 provider "aws" {
   region = var.region
 }
+# Using data to referrance. The VPC ID can be found in the AWS portal. Tagging must be the same as the tag in other folders when it comes to data.
 data "aws_vpc" "vpc1" {
-  id = "vpc-00a76c56f0609575c"
+  id = var.vpc_1_ID
 }
 data "aws_vpc" "vpc2" {
-  id = "vpc-0f0fd12cb7c8813f3"
+  id = var.vpc_2_ID
 }
+# Creating peering connection.
 resource "aws_vpc_peering_connection" "vpc_connection" {
-  peer_owner_id = "911709223110"
+  peer_owner_id = var.amazon_account_ID
   peer_vpc_id = data.aws_vpc.vpc1.id
   vpc_id = data.aws_vpc.vpc2.id
-  peer_region = "eu-north-1"
+  peer_region = var.region
 tags = {
-  name = "vpc1-to-vpc2"
+  Name = "VPC1-to-VPC2"
 }
+# Creating peering connection acceptor.
 }
-
 resource "aws_vpc_peering_connection_accepter" "peer" {
   vpc_peering_connection_id = aws_vpc_peering_connection.vpc_connection.id
   auto_accept = true
 
   tags = {
-
+    Name = "Peer_accepter"
   }
 }
+
