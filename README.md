@@ -7,7 +7,11 @@ Sette opp to virtuelle nettverk i alle 3 skyplattformer, sette opp peering mello
 ![alt text](AWS/Picture3-peering.png)
 
 ## Azure
-
+![alt text](Azure/Screenshoots/Azure_1.png)
+![alt text](Azure/Screenshoots/Azure_2.png)
+![alt text](Azure/Screenshoots/Azure_3.png)
+![alt text](Azure/Screenshoots/Azure_4.png)
+![alt text](Azure/Screenshoots/Azure_5.png)
 ## GCP 
 
 ![alt text](GCP/screenshots/gcp_peering_01.PNG)
