@@ -29,5 +29,5 @@ resource "aws_subnet" "subnet_ubuntu" {
   for_each = var.subnet_ubuntu
   tags = {Name=each.value.Name}
   cidr_block = each.value.cidr_block
-  vpc_id = each.value.vpc_id
+  vpc_id = aws_vpc.vpc_ubuntu.id
 }
